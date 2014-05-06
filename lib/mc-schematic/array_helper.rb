@@ -37,6 +37,8 @@ module MCSchematic
       end
       blocks
     end
-    
+    def self.get_element(data, x, y, z, width, height=0, length)
+      data[(width * length) * y + (x * length + z)]
+    end
   end
 end

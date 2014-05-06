@@ -1,5 +1,6 @@
 require 'mc-schematic/version'
 require 'mc-schematic/array_helper'
+require 'mc-schematic/block'
 require 'zlib'
 require 'nbtfile'
 
@@ -8,6 +9,7 @@ module MCSchematic
     attr_reader :type
     attr_accessor :nbt
     attr_accessor :blocks
+    attr_accessor :data
     attr_accessor :width
     attr_accessor :height
     attr_accessor :length
@@ -24,6 +26,7 @@ module MCSchematic
       schem = @nbt[1]
       @type = 'worldedit' if schem['WEOffsetX']
       @blocks = schem['Blocks'].value.bytes
+      @data = schem['Data'].value.bytes
       @width = schem['Width'].value
       @height = schem['Height'].value
       @length = schem['Length'].value
@@ -31,6 +34,20 @@ module MCSchematic
 
     def get_block_multi_array
       MCSchematic::ArrayHelper.multi_array blocks, width, height, length
+    end
+
+    def get_block(x, y, z)
+      id = get_block_id x, y, z
+      data = get_block_data x, y, z
+      Block.new id, data, x, y, z
+    end
+
+    def get_block_id(x, y, z)
+      MCSchematic::ArrayHelper.get_element @blocks, x, y, z, @width, @height, @length
+    end
+
+    def get_block_data(x, y, z)
+      MCSchematic::ArrayHelper.get_element @data, x, y, z, @width, @height, @length
     end
 
   end
