@@ -99,6 +99,7 @@ module MCSchematic
     @@image_json['block_ids'].each_pair do |block, block_id|
       return block if block_id == id
     end
+    nil
   end
 
   def self.get_block_image_path(name)
