@@ -3,6 +3,7 @@ require 'mc-schematic/array_helper'
 require 'mc-schematic/block'
 require 'zlib'
 require 'nbtfile'
+require 'json'
 
 module MCSchematic
   class SchematicFile
@@ -80,6 +81,28 @@ module MCSchematic
 
   def self.raise_format_error(reason)
     raise SchematicException::IncorrectFormat.new reason
+  end
+
+  def self.resource_path(path)
+    File.expand_path('../../' + path, __FILE__)
+  end
+
+  @@image_json
+
+  def self.initialize_image_json
+    @@image_json = JSON.parse IO.read(resource_path('db/image_data.json'))
+  end
+
+  initialize_image_json
+
+  def self.get_block_name(id)
+    @@image_json['block_ids'].each_pair do |block, block_id|
+      return block if block_id == id
+    end
+  end
+
+  def self.get_block_image_path(name)
+    resource_path('images/minecraft/blocks/' + name + '.png')
   end
 
 end
