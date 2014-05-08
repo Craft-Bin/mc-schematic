@@ -117,6 +117,10 @@
         "water_lily" : 111,
         "web" : 30,
         "wheat" : 59,
-        "wool_colored_white" : 35
+        "wool_colored_white" : 35,
+        "water_flow" : 8,
+        "water_still" : 9,
+        "lava_flow" : 10,
+        "lava_still" : 11
     }
 }
